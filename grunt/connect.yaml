@@ -1,0 +1,19 @@
+options:
+  debug: true
+  open: http://myi.vip.com/
+  port: <%= port %>
+  hostname: <%= host %>
+  livereload: <%= livereload %>
+
+livereload:
+  options:
+    base:
+      - <%= dev %>
+
+product:
+  options:
+      open: true
+      keepalive: true
+      livereload: false
+      base:
+        - <%= dist %>

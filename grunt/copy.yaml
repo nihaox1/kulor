@@ -1,0 +1,71 @@
+css-dev:
+  expand: true
+  filter: isFile
+  cwd   : <%= src %>
+  src   : '**/*.css'
+  dest  : <%= dev %>
+
+fonts-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= src %>/fonts
+  src: '*'
+  dest: <%= dev %>/fonts
+
+images-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= src %>
+  src:
+    - '**/*.jpg'
+    - '**/*.jpeg'
+    - '**/*.png'
+    - '**/*.bmp'
+  dest: <%= dev %>
+
+lib-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= src %>/js/lib
+  src: '*'
+  dest: <%= dev %>/js/lib
+
+lib-temp:
+  expand: true
+  filter: isFile
+  cwd: <%= dev %>/js/lib
+  src:
+    - jquery*.js
+  dest: <%= temp %>/js/lib
+
+lib-dist:
+  expand: true
+  filter: isFile
+  cwd: <%= dev %>/js/lib
+  src:
+    - html5.js
+    - jquery*.js
+    - sea*.js
+    - '*.map'
+  dest: <%= dist %>/js/lib
+
+hoot-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= src %>/js/hoot
+  src: '*'
+  dest: <%= dev %>/js/hoot
+
+js-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= src %>
+  src: '**/*.js'
+  dest: <%= dev %>
+
+html-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= src %>
+  src: '**/*.html'
+  dest: <%= dev %>

@@ -1,0 +1,53 @@
+options:
+  livereload: true
+  spawn: false
+
+seajs:
+  files:
+    - <%= helper %>/sea-config.json
+  tasks:
+    - config_seajs:dev
+
+images:
+  files:
+    - <%= src %>/images/*.*
+    - <%= src %>/images/**/*.*
+  tasks:
+    - copy:images-dev
+
+fonts:
+  files:
+    - <%= src %>/fonts/*.*
+  tasks:
+    - copy:fonts-dev
+
+css:
+  files:
+    - <%= src %>/css/*.*
+  tasks:
+    - copy:css-dev
+
+js:
+  files:
+    - <%= src %>/js/*.js
+    - <%= src %>/js/**/*.js
+  tasks:
+    - copy:js-dev
+    - copy:lib-dev
+    - copy:hoot-dev
+
+less:
+  files:
+    - <%= src %>/less/*.less
+    - <%= src %>/less/**/*.less
+  tasks:
+    - less
+
+jade:
+  files:
+    - <%= src %>/*.jade
+    - <%= src %>/template/*.jade
+    - <%= src %>/layout/*.jade
+    - <%= src %>/layout/**/*.jade
+  tasks:
+    - jade

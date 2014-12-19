@@ -1,0 +1,34 @@
+# 规则设置参考阅读：
+#  - https://github.com/ecomfe/edp/issues/77
+#  - http://ued.sina.com.cn/?p=593
+#  - http://xiaomiya.iteye.com/blog/1453528
+
+
+# 规则设置
+#  false - 忽略
+#  true  - 警告
+#  2     - 错误
+
+options:
+  # 格式化输出的文件格式和路径
+  formatters:
+    - id: text
+      dest: <%= report %>/csslint-v<%= pkg.version %>.txt
+
+  absoluteFilePathsForFormatters: false
+
+  # 规则文件所在路径
+  csslintrc: grunt/.csslintrc
+
+# 自定义检查
+strict:
+  options:
+    import: 2
+  src:
+    - <%= dev %>/css/*.css
+
+lax:
+  options:
+    import: false
+  src:
+    - <%= dev %>/css/*.css

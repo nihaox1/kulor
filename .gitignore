@@ -1,0 +1,8 @@
+.idea
+.temp
+.DS_Store
+node_modules
+dev
+dist
+report
+npm-debug.log

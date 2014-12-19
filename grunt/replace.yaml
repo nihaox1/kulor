@@ -1,0 +1,6 @@
+product     :
+    src         : <%= dev %>/
+    dest        : <%= dist %>/
+    ignoreUrl   : <%= ignore %>
+    isIeHacker  : true
+    redirectOrigin    : <%= redirect %>/

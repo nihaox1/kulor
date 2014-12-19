@@ -1,0 +1,28 @@
+options:
+
+  banner: /*! <%= grunt.template.today('yyyy-mm-dd hh:MM:ss') %> */
+
+  # 是否保留特殊注释
+  #   * - 默认值，保留所有通过 /*! ... */ 书写的注释
+  #   1 - 只保留第一个通过 /*! ... */ 书写的注释
+  #   0 - 全都不保留
+  keepSpecialComments: 0
+
+  # 展示文件压缩前后以及服务器端开启gzip压缩后的css文件大小
+  #   false - 默认值，不展示任何信息
+  #   min   - 展示 CSS 压缩前和压缩后的文件大小
+  #   gzip  - 展示 CSS 文件压缩前后以及服务器端开启 gzip 后的 CSS 文件大小
+  #           必须说明的是当设置为 gzip 时，会花费原来5-10倍的时间才能完成本次任务
+  report: min
+
+minify:
+  expand: true
+  # 指定待压缩的文件路径
+  cwd: <%= dev %>/css/
+  # 源文件
+  src:
+    - '*.css'
+  # 生成的压缩文件存放的路径
+  dest: <%= dist %>/css/
+  # 修改扩展名
+  ext: .css
