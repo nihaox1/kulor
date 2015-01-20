@@ -31,15 +31,18 @@ js:
   files:
     - <%= src %>/js/*.js
     - <%= src %>/js/**/*.js
+    - <%= src %>/subs/**/*.js
   tasks:
     - copy:js-dev
     - copy:lib-dev
     - copy:hoot-dev
+    - copy:js-dev-sub
 
 less:
   files:
     - <%= src %>/less/*.less
     - <%= src %>/less/**/*.less
+    - <%= src %>/subs/**/*.less
   tasks:
     - less
 
@@ -49,5 +52,7 @@ jade:
     - <%= src %>/template/*.jade
     - <%= src %>/layout/*.jade
     - <%= src %>/layout/**/*.jade
+    - <%= src %>/subs/**/*.jade
   tasks:
     - jade
+    - listcsslink

@@ -6,6 +6,7 @@ copy-dev:
   - copy:hoot-dev
   - copy:css-dev
   - copy:html-dev
+  - copy:js-dev-sub
 
 copy-temp:
   - copy:lib-temp
@@ -22,13 +23,11 @@ dev:
   - less
   - jade:dev
   - copy-dev
+  - listcsslink
 
 # 打开发布版服务器
 online:
-  - clean:dev
-  - less
-  - jade:publish
-  - copy-dev
+  - dev
   - replace:product
 
 default:

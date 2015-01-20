@@ -59,9 +59,9 @@ hoot-dev:
 js-dev:
   expand: true
   filter: isFile
-  cwd: <%= src %>
+  cwd: <%= src %>/js
   src: '**/*.js'
-  dest: <%= dev %>
+  dest: <%= dev %>/js
 
 html-dev:
   expand: true
@@ -69,3 +69,11 @@ html-dev:
   cwd: <%= src %>
   src: '**/*.html'
   dest: <%= dev %>
+
+js-dev-sub:
+  expand  : true
+  flatten : true
+  filter  : isFile
+  cwd     : <%= src %>/subs/
+  src     : "**/*.js"
+  dest    : <%= dev %>/js/subs

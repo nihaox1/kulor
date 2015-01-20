@@ -1,0 +1,25 @@
+.opacity( @factor ) {
+    @iefactor   : @factor * 100;
+    -ms-filter  : "progid:DXImageTransform.Microsoft.Alpha(Opacity=@{iefactor})";
+    filter      : ~"alpha(opacity=@{iefactor})";
+    opacity     : @factor;
+}
+
+.transition( ... ) {
+    -webkit-transition    : @arguments;
+    -moz-transition       : @arguments;
+    -o-transition         : @arguments;
+    -ms-transition        : @arguments;
+    transition            : @arguments;
+}
+
+.user-select( @args ) {
+    -webkit-user-select : $args;
+    -moz-user-select    : $args;
+    -ms-user-select     : $args;
+    user-select         : $args;
+}
+
+.uiSub-hidden {
+    display         : none; 
+}

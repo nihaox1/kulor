@@ -1,0 +1,12 @@
+include ../panel/panel.jade
+link( type="text/css" , rel="stylesheet" , href="css/subs/dialog.css" )
+script( type="text/javascript" , src="js/subs/dialog.js" )
+
+script( type="text/kulor-template" , id="uiSub-dialog-container" )
+    div(class="uiSub-dialog-container uiSub-dialog-theme-{{theme}}")
+        h5.uiSub-dialog-title {{title}}
+            i.uiSub-dialog-close(uiSub-role="close") X
+        .uiSub-dialog-content {{content}}
+        .uiSub-btn-footer 
+            a.btn.btn-info(uiSub-role="sure") {{successBtnName}}
+            a.btn.btn-default(uiSub-role="close") {{cancelBtnName}}
