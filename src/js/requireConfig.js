@@ -9,7 +9,7 @@ require.config({
         "Listener"      : "js/unit/listener" ,
         "EventBind"     : "js/unit/eventBind" ,
         "DataView"      : "js/unit/dataView" ,
-        "View"          : "js/unit/View" ,
+        "ModalView"     : "js/unit/modalView" ,
         "Panel"         : "js/subs/panel" , 
         "Dialog"        : "js/subs/dialog" 
     }

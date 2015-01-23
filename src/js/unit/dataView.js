@@ -30,6 +30,7 @@ define( "DataView" , [ "Base" , "Template" , "EventBind" ] , function( Base , Te
 		getDataModal 	: function(){
 			if ( !this._dataViewConfig.$content || !this._dataViewConfig.$content.parent.length ) {
 				this._dataViewConfig.$content = $( this.getTemplate( this._dataViewConfig.innerVals , this._dataViewConfig.templateId ) );
+				this._dataViewConfig.$content.attr( "dataViewId" , this._dataViewConfig.dataViewId );
 				this.addEventBindItems( this._dataViewConfig.events , this._dataViewConfig.$content );
 			};
 			return this._dataViewConfig.$content;
@@ -63,10 +64,8 @@ define( "DataView" , [ "Base" , "Template" , "EventBind" ] , function( Base , Te
 					_$parent = this._dataViewConfig.$content.parent();
 					if ( _$parent.length ) {
 						_content = this._dataViewConfig.$content[ 0 ];
-						_content.outerHTML = this.getTemplate( json , this._dataViewConfig.templateId );
-						_content.className += " " + _className;
-						this._dataViewConfig.$content.remove();
-						this._dataViewConfig.$content = _$parent.find( "." + _className );
+						_content.outerHTML = this.getTemplate( json , this._dataViewConfig.templateId ).replace( /(<\w*)/ , "$1 dataViewId='" + this._dataViewConfig.dataViewId + "'" );
+						this._dataViewConfig.$content = _$parent.find( _content.tagName + "[dataViewId='" + this._dataViewConfig.dataViewId + "']" );
 						this.addEventBindItems( this._dataViewConfig.events , this._dataViewConfig.$content );
 					}
 				}
