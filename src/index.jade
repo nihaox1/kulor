@@ -7,19 +7,22 @@ block body
     include subs/panel/panel
     include subs/dialog/dialog
 
-    form#form
-        p 
-            label   userName
-            input(type="text",name="userName")
-        p 
-            label   email
-            input(type="text",name="email")
-        p 
-            label   mobile
-            input(type="text",name="mobile")
-        p 
-            label   mobile2
-            input(type="text",name="mobile2")
+    script( type="text/kulor-template" , id="dataViewTemplate" )
+        form#form
+            p.form-group 
+                label   userName
+                input.form-control(type="text",name="userName",value="{{userName}}")
+            p.form-group 
+                label   email
+                input.form-control(type="text",name="email",value="{{email}}")
+            p.form-group 
+                label   mobile
+                input.form-control(type="text",name="mobile",value="{{mobile}}")
+            p.form-group
+                a#formBtn.btn.btn-info(onclick="return false;") 提交
+
+
+
 
     script( type="text/javascript" , src = "js/requireConfig.js" )
     script( type="text/javascript" , src = "js/app.js" )

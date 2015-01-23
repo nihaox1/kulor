@@ -4,8 +4,12 @@ require.config({
         "HandleBars"    : "js/lib/handlebars",
         "Base"          : "js/unit/base" ,
         "Ajax"          : "js/unit/ajax" ,
-        "Verify"        : "js/unit/verify" ,
+        "Validate"      : "js/unit/Validate" ,
         "Template"      : "js/unit/template" ,
+        "Listener"      : "js/unit/listener" ,
+        "EventBind"     : "js/unit/eventBind" ,
+        "DataView"      : "js/unit/dataView" ,
+        "View"          : "js/unit/View" ,
         "Panel"         : "js/subs/panel" , 
         "Dialog"        : "js/subs/dialog" 
     }

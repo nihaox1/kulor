@@ -1,13 +1,65 @@
-define( "Verify" , [ "Base" ] , function( Base ){
+define( "Validate" , [ "Base" ] , function( Base ){
     /*!
      *  验证插件
      */
-    var Verify = Base.extend( function(){
-        this._verifyConfig = { rules : {} };
+    var Validate = Base.extend( function(){
+        this._validateConfig = { rules : {} };
     } , {
-        __verifyConfig      : {
+        __validateConfig      : {
             rules           : {} ,
             verifyItems     : {}
+        } ,
+        /*!
+         *  验证一个表单
+         *  @id     {string}    表单的id  对应addVerifyItem  id
+         *  @opt    {bool|object}
+         *      forceEnd        {bool} 是否执行到最后
+         *      handleCallback  {bool} 是否执行之前定义的回调函数
+         */
+        validateStatus    : function( id , opt ){
+            var _rtn = [],
+                _input ,
+                _verify ,
+                _inputRule;
+            opt     = typeof opt == "object" ? opt : {};
+            if ( _inputRule = this.__validateConfig.verifyItems[ id ] ) {
+                for ( var a in _inputRule.inputRules ) {
+                    _input  = _inputRule.inputRules[ a ];
+                    _verify = this.handleVerifyItem( _input );
+                    if ( opt.handleCallback ) {                        
+                        _inputRule.callbackFunc( _input.$input , _verify , _input.content , _input );
+                    }
+                    if ( !opt.forceEnd && !_verify ) {
+                        return false;
+                    }  else if( !_verify ) {
+                        _rtn.push( _input );
+                    }
+                }
+            }
+            return opt.forceEnd && _rtn.length ? _rtn : true;
+        } ,
+        /*!
+         *  执行验证规则
+         *  @ruleInput  {object}    待验证的ruleInput值
+         *  @forceEnd   {bool}      验证完全所有的规则
+         */
+        handleVerifyItem  : function( ruleInput , forceEnd ){
+            var _rtn = {},
+                _rule,
+                _val = ruleInput.$input.val();
+            for( var i = ruleInput.rules.length; i--; ){
+                _rule = this._validateConfig.rules[ ruleInput.rules[ i ].ruleName ] || this.__validateConfig.rules[ ruleInput.rules[ i ].ruleName ];
+                if ( _rule ) {
+                    if ( !_rule( _val , ruleInput.rules[ i ].param , ruleInput ) ) {
+                        if ( !forceEnd ) {
+                            return false;
+                        } else {
+                            _rtn[ ruleInput.rules[ i ].ruleName ] = false;
+                        }
+                    }
+                }
+            }
+            return forceEnd ? _rtn : true;
         } ,
         /*!
          *  添加一个验证模块
@@ -17,8 +69,9 @@ define( "Verify" , [ "Base" ] , function( Base ){
          *  @func       {function}      回调方法
          */
         addVerifyItem     : function( id , $form , rules , func ){
+            var _self = this;
             if ( $.isFunction( func ) ) {
-                this.__verifyConfig.verifyItems[ id ] = {
+                this.__validateConfig.verifyItems[ id ] = {
                     __id        : id ,
                     __$form     : $form ,
                     inputRules  : rules ,
@@ -35,7 +88,7 @@ define( "Verify" , [ "Base" ] , function( Base ){
                         } else if( _input instanceof Array ){
                             _input = {
                                 rules   : _input[ 0 ] ,
-                                content : _input[ 1 ] ,
+                                content : _input[ 1 ] || "",
                                 param   : _input[ 2 ]
                             };
                         }
@@ -48,10 +101,10 @@ define( "Verify" , [ "Base" ] , function( Base ){
                         for( var i = _input.rules.length; i--; ){
                             if ( /.+\[.+\]/.test( _input.rules[ i ] ) ) {
                                 _input.rules[ i ] = _input.rules[ i ].split( "[" );
-                                _rule[ _input.rules[ 0 ] ] = {
+                                _rule.push( {
                                     ruleName    : _input.rules[ i ][ 0 ] ,
                                     param       : eval( "[" + _input.rules[ i ][ 1 ] )
-                                }
+                                } );
                             } else {
                                 _rule.push( {
                                     ruleName    : _input.rules
@@ -62,7 +115,7 @@ define( "Verify" , [ "Base" ] , function( Base ){
                         rules[ this.name ] = _input;
 
                         _input.$input.blur( function(){
-
+                            func( _input.$input , _self.handleVerifyItem( _input ) , _input.content , _input );
                         } );
                     }
                 } );
@@ -83,11 +136,15 @@ define( "Verify" , [ "Base" ] , function( Base ){
                 _inputs = ruleName;
                 isGlobal = ruleFunc;
             }
-            $.extend( this[ isGlobal ? "__verifyConfig" : "_verifyConfig" ].rules , _inputs );
+            $.extend( this[ isGlobal ? "__validateConfig" : "_validateConfig" ].rules , _inputs );
             return this;
         }
     } );
-    new Verify().addRules( {
+
+    /*!
+     *  新增默认的验证类型
+     */
+    new Validate().addRules( {
         email   : function( str , opt ){
             return /.+\@.+\..+/.test( str );
         } , 
@@ -98,7 +155,7 @@ define( "Verify" , [ "Base" ] , function( Base ){
                 _len = $.trim( str ).length;
                 return _len < array[ 0 ] ? false :
                             !array[ 1 ] ? true :
-                                _len > array[ 1 ];
+                                _len > array[ 1 ] ? false : true;
             } else {
                 return false;
             }
@@ -107,5 +164,6 @@ define( "Verify" , [ "Base" ] , function( Base ){
             return /^\d+$/.test( str );
         }
     } , true );
-    return Verify;
+
+    return Validate;
 } );

@@ -19,7 +19,11 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 this._ajaxConfig.failList = [ opt.fail ];
             }
         }
+        this.pipeList = {};
     } , {
+        getUniqueId     : function(){
+            return new Date().getTime() + "" + Math.ceil( Math.random() * 1000000 );
+        } ,
         __ajaxConfig : {
             failList        : [],
             successList     : [],
@@ -38,7 +42,7 @@ define( "Ajax" , [ "Base" ] , function( Base ){
          *      submitUrl       {string}    设置源地址，设置此地址后，后续请求如果不写url将默认指向这里
          *  @isGlobal   {bool}  是否放置于全局配置中
          */
-        config      : function( opt , isGlobal ){
+        setAjaxConfig      : function( opt , isGlobal ){
             if ( opt.successList ) {
                 opt.successList = $.isFunction( opt.successList ) ? [ opt.successList ] : opt.successList;
             }
@@ -158,6 +162,59 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 dataType    : "jsonp" , 
                 successCall : func
             } );
+        } ,
+        /*!
+         *  管道 用于设置多个 ajax同时回调的操作处理
+         */
+        pipe        : function( url , data , type ){
+            var _self   = this,
+                _type   = type ? type.toString().toLocaleString() : "post",
+                _opt;
+                
+            _opt = {
+                url     : url,
+                data    : data,
+                type    : type && { get : 1 , post : 1 }[ _type ]? type : "post",
+                rtnVal  : false,
+                pipeId  : false,
+                pos     : 0 
+            };
+            if( type === "jsonp" ){
+                _opt.dataType = "jsonp";
+            }
+            if( !this.isPipe ){
+                this.isPipe = this.getUniqueId();
+                this.pipeList[ this.isPipe ] = [ _opt ];
+                this.pipeList[ this.isPipe ].complatedCount = 0;
+            } else {
+                this.pipeList[ this.isPipe ].push( _opt );
+            }
+            _opt.pipeId = this.isPipe;
+            _opt.pos    = this.pipeList[ this.isPipe ].length - 1;
+            _opt.successCall = function( rtn ){
+                _self.pipeList[ this.pipeId ][ this.pos ].rtnVal = rtn;
+                if( ++_self.pipeList[ this.pipeId ].complatedCount == _self.pipeList[ this.pipeId ].length ){
+                    _self.pipeList[ this.pipeId ].handleComplated.apply( _self , ( function( vals ){
+                        var _rtns   = [];
+                        for( var i = 0 , len = vals.length; i <len; i++ ){
+                            _rtns.push( vals[ i ].rtnVal );
+                        }
+                        return _rtns;
+                    } )( _self.pipeList[ this.pipeId ] ).concat( [ _self.pipeList[ this.pipeId ] ] ) );
+                }
+            };
+            this.ajax( _opt );
+            return this;
+        },
+        /*!
+         *  管道设置完毕后 要求执行的函数内容
+         *  @func   {func}  回调事件
+         *      argument   : {array}   对应pipe位置的数组
+         */
+        then        : function( func ){
+            this.pipeList[ this.isPipe ].handleComplated = func;
+            this.isPipe = false;
+            return this;
         }
     } );
     return Ajax;

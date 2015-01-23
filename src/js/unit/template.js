@@ -68,8 +68,8 @@ define( "Template" , [ "Base" , "HandleBars" ] , function( Base , HandleBars ){
         /*!
          *  获取所有的模板信息
          */
-        getTemplateIdList : function(){
-            return this.__Template;
+        getTemplateIdList : function( id ){
+            return id ? this.__Template[ id ] : this.__Template;
         } ,
         /*!
          *  设置模板的type 索引名称 
