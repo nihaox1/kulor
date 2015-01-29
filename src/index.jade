@@ -6,6 +6,7 @@ block body
     include layout/template/template
     include subs/panel/panel
     include subs/dialog/dialog
+    include subs/modalPage/page
 
     article.modal-view
         h3 xxxxx
@@ -14,6 +15,7 @@ block body
         p   
             a.btn.btn-info 提交
 
+    article#pageModal
 
     script( type="text/kulor-template" , id="dataViewTemplate" )
         form#form
@@ -28,9 +30,6 @@ block body
                 input.form-control(type="text",name="mobile",value="{{mobile}}")
             p.form-group
                 a#formBtn.btn.btn-info(onclick="return false;") 提交
-
-
-
 
     script( type="text/javascript" , src = "js/requireConfig.js" )
     script( type="text/javascript" , src = "js/app.js" )

@@ -12,6 +12,7 @@ require.config({
         "ModalView"     : "js/unit/modalView" ,
         "RequireFile"   : "js/unit/requireFile" ,
         "Panel"         : "js/subs/panel" , 
+        "Page"          : "js/subs/page" , 
         "Dialog"        : "js/subs/dialog" 
     }
 });

@@ -10,7 +10,7 @@ define( "Template" , [ "Base" , "HandleBars" ] , function( Base , HandleBars ){
         }
         this.setTemplateRuleTagName( tagName );
     } , {
-        __config    : {
+        __templateConfig    : {
             ruleTagName    : "kulor-template"
         },
         __Template  : {} ,
@@ -43,7 +43,7 @@ define( "Template" , [ "Base" , "HandleBars" ] , function( Base , HandleBars ){
          */
         getTemplateSources : function(){
             var _self = this;
-            $( "script[type='text/" + _self.__config.ruleTagName + "']" ).each( function(){
+            $( "script[type='text/" + _self.__templateConfig.ruleTagName + "']" ).each( function(){
                 _self.__Template[ this.id ] = {
                         id              : this.id ,
                         TemplateContent : this.innerHTML ,
@@ -78,7 +78,7 @@ define( "Template" , [ "Base" , "HandleBars" ] , function( Base , HandleBars ){
          */
         setTemplateRuleTagName : function( tagName ){
             if( typeof tagName == "string" ){
-                this.__config.ruleTagName = tagName;
+                this.__templateConfig.ruleTagName = tagName;
             }
             return this;
         }
