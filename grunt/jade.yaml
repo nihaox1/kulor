@@ -8,6 +8,6 @@ publish:
 dev :
     expand  : true
     cwd     : <%= src %>
-    src     : '*.jade'
+    src     : '**/*.jade'
     dest    : <%= dev%>
     ext     : '.html'

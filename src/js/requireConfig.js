@@ -10,6 +10,7 @@ require.config({
         "EventBind"     : "js/unit/eventBind" ,
         "DataView"      : "js/unit/dataView" ,
         "ModalView"     : "js/unit/modalView" ,
+        "RequireFile"   : "js/unit/requireFile" ,
         "Panel"         : "js/subs/panel" , 
         "Dialog"        : "js/subs/dialog" 
     }
