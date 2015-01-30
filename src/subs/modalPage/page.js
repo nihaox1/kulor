@@ -101,9 +101,9 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 			} ,			
 			setPageToReady 	: function( pageInfo , constructor ){
 				var _self = this;
-				$.extend( this , constructor.call( this , this._pageConfig.belongPageList ) );
 				if ( pageInfo.requireFile instanceof Array ) {
 					this._pageConfig.belongPageList.getFile( pageInfo.requireFile , function(){
+						$.extend( _self , constructor.call( _self , _self._pageConfig.belongPageList ) );
 						_self.handlePageEventList();
 						_self._pageConfig.ready = true;
 					} );
