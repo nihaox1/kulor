@@ -94,15 +94,20 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 				if ( this._pageConfig.ready == "ready" ) {
 					this.handlePageEventList();
 				} else if( this._pageConfig.ready != "waiting" ){
-					new RequireFile( this._pageConfig.jsPath );
+					this._pageConfig.belongPageList.getFile( this._pageConfig.jsPath );
 					this._pageConfig.ready = "waiting";
 				}
 				return this;
 			} ,			
 			setPageToReady 	: function( pageInfo , constructor ){
+				var _self = this;
 				$.extend( this , constructor.call( this , this._pageConfig.belongPageList ) );
-				this.handlePageEventList();
-				this._pageConfig.ready = true;
+				if ( pageInfo.requireFile instanceof Array ) {
+					this._pageConfig.belongPageList.getFile( pageInfo.requireFile , function(){
+						_self.handlePageEventList();
+						_self._pageConfig.ready = true;
+					} );
+				}
 				return this;
 			}
 		} );
