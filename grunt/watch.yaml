@@ -53,6 +53,13 @@ jade:
     - <%= src %>/layout/*.jade
     - <%= src %>/layout/**/*.jade
     - <%= src %>/subs/**/*.jade
+    - <%= src %>/page/**/*.jade
   tasks:
     - jade
     - listcsslink
+
+manifest:
+  files:
+    - <%= src %>/*.json
+  tasks:
+    - copy:manifest

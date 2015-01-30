@@ -7,6 +7,7 @@ copy-dev:
   - copy:css-dev
   - copy:html-dev
   - copy:js-dev-sub
+  - copy:manifest
 
 copy-temp:
   - copy:lib-temp

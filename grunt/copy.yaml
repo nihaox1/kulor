@@ -77,3 +77,10 @@ js-dev-sub:
   cwd     : <%= src %>/subs/
   src     : "**/*.js"
   dest    : <%= dev %>/js/subs
+
+manifest  :
+  expand  : true
+  filter  : isFile
+  cwd     : <%= src %>/
+  src     : "*.json"
+  dest    : <%= dev %>/

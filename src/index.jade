@@ -3,33 +3,12 @@ extends layout/base
 block head
 
 block body
-    include layout/template/template
-    include subs/panel/panel
-    include subs/dialog/dialog
+    header
+        label   工具箱
+        span    首页
+
+    article.contentBody
+
     include subs/modalPage/page
-
-    article.modal-view
-        h3 xxxxx
-        p  简介：
-        p  xxxxxxxxxxxxxxxxxx  
-        p   
-            a.btn.btn-info 提交
-
-    article#pageModal
-
-    script( type="text/kulor-template" , id="dataViewTemplate" )
-        form#form
-            p.form-group 
-                label   userName
-                input.form-control(type="text",name="userName",value="{{userName}}")
-            p.form-group 
-                label   email
-                input.form-control(type="text",name="email",value="{{email}}")
-            p.form-group 
-                label   mobile
-                input.form-control(type="text",name="mobile",value="{{mobile}}")
-            p.form-group
-                a#formBtn.btn.btn-info(onclick="return false;") 提交
-
     script( type="text/javascript" , src = "js/requireConfig.js" )
     script( type="text/javascript" , src = "js/app.js" )

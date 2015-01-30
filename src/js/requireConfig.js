@@ -1,7 +1,6 @@
 require.config({
     baseUrl     : "/",
     paths   : {
-        "HandleBars"    : "js/lib/handlebars",
         "Base"          : "js/unit/base" ,
         "Ajax"          : "js/unit/ajax" ,
         "Validate"      : "js/unit/Validate" ,
