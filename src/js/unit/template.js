@@ -1,4 +1,4 @@
-define( "Template" , [ "Base" , "HandleBars" ] , function( Base , HandleBars ){
+define( "Template" , [ "Base" ] , function( Base ){
     /*!
      *  @tagName    {string}
      *  要求获取的tagName索引
@@ -11,9 +11,15 @@ define( "Template" , [ "Base" , "HandleBars" ] , function( Base , HandleBars ){
         this.setTemplateRuleTagName( tagName );
     } , {
         __templateConfig    : {
-            ruleTagName    : "kulor-template"
+            ruleTagName     : "kulor-template" 
         },
         __Template  : {} ,
+        /*!
+         *  简写getTemplate方法
+         */
+        get         : function(){
+            return this.getTemplate.apply( this , arguments );
+        } ,
         /*! 
          *  根据json 拼接html
          *  @json   {object}    待输入的json数据
@@ -82,6 +88,98 @@ define( "Template" , [ "Base" , "HandleBars" ] , function( Base , HandleBars ){
             }
             return this;
         }
-    } );
+    } ) ,
+    HandleBars  = HandleBars || (function(){
+        var HandleBar = Base.extend( function( html ){
+            var _self           = this;
+            this.htmlString     = html;
+            this.htmlArray      = this.splitHtmlToArray( html );
+        } , {
+            /*!
+             *  获取一个obj下的任意字段值
+             *  @key    {string}
+             *  @json   {json}
+             *  return  {string}
+             */
+            getValue : function( key , json ){
+                var _keys   = key.split( "." ),
+                    _rtn    = json;
+                for( var i = 0 , len = _keys.length; i < len; i++ ){
+                    _rtn = _rtn[ _keys[ i ] ];
+                }
+                return _rtn;
+            },
+            /*!
+             *  组装一个模板html
+             *  @json   {object}
+             *  @array  {array}
+             *  return  {string}
+             */
+            makeUpHtml : function( json , array ){
+                var _al         = [],
+                    _self       = this,
+                    _json       = $.isArray( json ) ? json : [ json ],
+                    _rtn        = [],
+                    _x          = function( json ){
+                        _al.length = 0;
+                        for( var i = 0 , len = array.length; i < len; i++ ){
+                            if( i % 2 ){
+                                if( typeof array[ i ] == "object" ){
+                                    if( !json[ array[ i ].key ] ){
+                                        w( "error variate : " + array[ i ].key );
+                                    } else {
+                                        _al.push( tool.makeUpHtml.call( _self , json[ array[ i ].key ] , array[ i ].list ) );
+                                    }
+                                    
+                                } else {
+                                    _al.push( _self.getValue( array[ i ] , json ) );
+                                }
+                            } else {
+                                _al.push( array[ i ] );
+                            }
+                        }
+                        return _al.join( "" );
+                    };
+
+                for( var i = 0 , len = _json.length; i < len; i++ ){
+                    _rtn.push( _x( _json[ i ] ) );
+                }
+                return _rtn.join( "" );
+            },
+            /*!
+             *  拆分一个html字符串 为数组 返回一个已表示层级结构的数组
+             *  @htmlStr    {string}
+             *  return  {array}
+             */
+            splitHtmlToArray : function( htmlStr ){
+                var _sp     = "=*&%*=";
+                    _al     = htmlStr.replace( /\{{2}([\w|\:|.]*)\}{2}/gi , _sp + "$1" + _sp ).split( _sp ),
+                    _i      = 0,
+                    _len    = _al.length,
+                    _x      = function(){
+                        var _rtn = [];
+                        for( ;_i < _len; _i++ ){
+                            if( /\/list/.test( _al[ _i ] ) ){
+                                return _rtn;
+                            } else if( /list\:/.test( _al[ _i ] ) ){
+                                _rtn.push( { key : _al[ _i++ ].replace( /\#list[ ]+/ , "" ) , list : _x() } );
+                            } else {
+                                _rtn.push( _al[ _i ] );
+                            }
+                        }
+                        return _rtn;
+                    };
+                return _x();
+            }
+        } );
+        return {
+            compile     : function( htmlString ){
+                var _handleBar = new HandleBar( htmlString );
+                return function( json ){
+                    return _handleBar.makeUpHtml( json , _handleBar.htmlArray )
+                }
+            }
+        }
+    })();
     return Template;
 } );
