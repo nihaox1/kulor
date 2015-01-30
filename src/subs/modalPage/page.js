@@ -29,7 +29,8 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 		initPageContainer 	: function( $container ){
 			this._pageListConfig.$container = $container;
 			$container.addClass( "uiSub-page-container" );
-			// $container.html( this.getTemplate( this.__pageListConfig.templateIds.container) );
+			// 	暂留提供page主题相关的引入
+			// 	$container.html( this.getTemplate( this.__pageListConfig.templateIds.container) );
 			return this;
 		} ,
 		addPage 		: function( pages ){
@@ -68,12 +69,11 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 				return this.setPageToReady.apply( this , arguments );
 			} ,
 			displayPageModal	: function( func ){
-				var _$container = this._pageConfig.belongPageList._pageListConfig.$container;
-				if( !this._pageConfig.$container ){
-					this._pageConfig.$container 	= $( this._pageConfig.belongPageList.getTemplate( this.__pageConfig.templateIds.container ) );
-					_$container.append( this._pageConfig.$container );
-				}
+				var _self 		= this ,
+					_$container = this._pageConfig.belongPageList._pageListConfig.$container;
+				
 				this.getPageModal( function(){
+					_self.getPageModalUI();
 					_$container.find( ".uiSub-page-singlePage" ).removeClass( "active" );
 					this._pageConfig.$container.addClass( "active" );
 					if( $.isFunction( func ) ){ func.call( this ); };
@@ -98,7 +98,22 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 					this._pageConfig.ready = "waiting";
 				}
 				return this;
-			} ,			
+			} ,	
+			/*!
+			 *	绘制page的内容
+			 * 	@templateId 	{string} 	
+			 */		
+			getPageModalUI 		: function( templateId ){
+				var _$container = this._pageConfig.belongPageList._pageListConfig.$container;
+				if( !this._pageConfig.$container ){
+					this._pageConfig.$container 	= $( this._pageConfig.belongPageList.getTemplate( this.__pageConfig.templateIds.container ) );
+					_$container.append( this._pageConfig.$container );
+				}
+				if( templateId ){
+					this._pageConfig.$container.html( this._pageConfig.belongPageList.getTemplate( templateId ) );
+				}
+				return this._pageConfig.$container;
+			} ,
 			setPageToReady 	: function( pageInfo , constructor ){
 				var _self = this;
 				if ( pageInfo.requireFile instanceof Array ) {
