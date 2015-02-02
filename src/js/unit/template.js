@@ -128,7 +128,7 @@ define( "Template" , [ "Base" ] , function( Base ){
                                     if( !json[ array[ i ].key ] ){
                                         w( "error variate : " + array[ i ].key );
                                     } else {
-                                        _al.push( tool.makeUpHtml.call( _self , json[ array[ i ].key ] , array[ i ].list ) );
+                                        _al.push( _self.makeUpHtml.call( _self , json[ array[ i ].key ] , array[ i ].list ) );
                                     }
                                     
                                 } else {
@@ -152,8 +152,8 @@ define( "Template" , [ "Base" ] , function( Base ){
              *  return  {array}
              */
             splitHtmlToArray : function( htmlStr ){
-                var _sp     = "=*&%*=";
-                    _al     = htmlStr.replace( /\{{2}([\w|\:|.]*)\}{2}/gi , _sp + "$1" + _sp ).split( _sp ),
+                var _sp     = "=*&%*=" ,
+                    _al     = htmlStr.replace( /\{{2}([^\}|^\{]*)\}{2}/gi , _sp + "$1" + _sp ).split( _sp ),
                     _i      = 0,
                     _len    = _al.length,
                     _x      = function(){
@@ -161,7 +161,7 @@ define( "Template" , [ "Base" ] , function( Base ){
                         for( ;_i < _len; _i++ ){
                             if( /\/list/.test( _al[ _i ] ) ){
                                 return _rtn;
-                            } else if( /list\:/.test( _al[ _i ] ) ){
+                            } else if( /\#list/.test( _al[ _i ] ) ){
                                 _rtn.push( { key : _al[ _i++ ].replace( /\#list[ ]+/ , "" ) , list : _x() } );
                             } else {
                                 _rtn.push( _al[ _i ] );
