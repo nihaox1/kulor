@@ -12,6 +12,10 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 		if ( $pageContainer.length ) {
 			this.initPageContainer( $pageContainer );
 		}
+		if( opt.opt ){
+			$.extend( this._pageListConfig , opt.opt );
+			delete opt.opt;
+		}
 		this.addPage( opt );
 		this.__pageListConfig.pageItems.push( this );
 	} , {
@@ -72,25 +76,25 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 				var _self 		= this ,
 					_$container = this._pageConfig.belongPageList._pageListConfig.$container;
 				
-				this.getPageModal( function(){
+				_self.getPageModal( function(){
 					_self.getPageModalUI();
 					_$container.find( ".uiSub-page-singlePage" ).removeClass( "active" );
-					this._pageConfig.$container.addClass( "active" );
+					_self._pageConfig.$container.addClass( "active" );
 					if( $.isFunction( func ) ){ func.call( this ); };
 				} );
 				return this;
 			} ,
 			handlePageEventList 	: function(){
 				for( var i = 0 , len = this._pageConfig.eventList.length; i < len; i++){
-					if( $.isFunction( this._pageConfig.eventList[ i ] ) ){
-						this._pageConfig.eventList[ i ].call( this );
-					}
+					this._pageConfig.eventList[ i ].call( this );
 				}
 				this._pageConfig.eventList.length = 0;
 				return this;
 			} ,
 			getPageModal 		: function( func ){
-				this._pageConfig.eventList.push( func );
+				this._pageConfig.eventList.push( function(){
+					if( $.isFunction( func ) && this._pageConfig.belongPageList._pageListConfig.callBack.call( this ) !== false ){ func(); }
+				} );
 				if ( this._pageConfig.ready == "ready" ) {
 					this.handlePageEventList();
 				} else if( this._pageConfig.ready != "waiting" ){
@@ -120,7 +124,7 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 					this._pageConfig.belongPageList.getFile( pageInfo.requireFile , function(){
 						$.extend( _self , constructor.call( _self , _self._pageConfig.belongPageList ) );
 						_self.handlePageEventList();
-						_self._pageConfig.ready = true;
+						_self._pageConfig.ready = "ready";
 					} );
 				}
 				return this;
