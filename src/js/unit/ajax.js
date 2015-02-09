@@ -6,9 +6,16 @@ define( "Ajax" , [ "Base" ] , function( Base ){
         this._ajaxConfig = {
             successList     : [] ,
             errorList       : [] ,
-            failList        : []
+            failList        : [] ,
+            beforeList      : [] ,
+            defaultConfig   : {
+                headers     : {}
+            }
         };
         if ( opt ) {
+            if ( opt.before ) {
+                this._ajaxConfig.beforeList = [ opt.before ];
+            }
             if ( opt.success ) {
                 this._ajaxConfig.successList = [ opt.success ];
             }
@@ -25,16 +32,20 @@ define( "Ajax" , [ "Base" ] , function( Base ){
             return new Date().getTime() + "" + Math.ceil( Math.random() * 1000000 );
         } ,
         __ajaxConfig : {
+            beforeList      : [],
             failList        : [],
+            errorList       : [],
             successList     : [],
             defaultConfig   : {
                 timeout     : 5000 ,
-                submitUrl   : false
+                submitUrl   : false ,
+                headers     : {}
             }
         } ,
         /*!
          *  设置ajax的配置
          *  @opt    {object}
+         *      beforeList      {function|array}    发送前的预操作
          *      successList     {function|array}
          *      errorList       {function|array}
          *      failList        {function|array}
@@ -43,27 +54,20 @@ define( "Ajax" , [ "Base" ] , function( Base ){
          *  @isGlobal   {bool}  是否放置于全局配置中
          */
         setAjaxConfig      : function( opt , isGlobal ){
-            if ( opt.successList ) {
-                opt.successList = $.isFunction( opt.successList ) ? [ opt.successList ] : opt.successList;
+            var _config     = this[ isGlobal ? "__ajaxConfig" : "_ajaxConfig" ] ,
+                _listHash   = [ "successList" , "beforeList" , "errorList" , "failList" ];
+
+            for( var i = _listHash.length; i--; ){
+                if( opt[ _listHash[ i ] ] ){
+                    opt[ _listHash[ i ] ] = $.isFunction( opt[ _listHash[ i ] ] ) ? [ opt[ _listHash[ i ] ] ] : opt[ _listHash[ i ] ];
+                }
+                _config[ _listHash[ i ] ] = _config[ _listHash[ i ] ].concat( opt[ _listHash[ i ] ] || [] );
+                delete opt[ _listHash[ i ] ];
             }
-            if ( opt.failList ) {
-                opt.failList = $.isFunction( opt.failList ) ? [ opt.failList ] : opt.failList;
+            if ( typeof opt.headers == "object" ) {
+                $.extend( _config.defaultConfig.headers , opt.headers );
             }
-            if ( opt.errorList ) {
-                opt.errorList = $.isFunction( opt.errorList ) ? [ opt.errorList ] : opt.errorList;
-            }
-            if ( isGlobal ) {
-                this.__ajaxConfig.successList = this.__ajaxConfig.successList.concat( opt.successList );
-                this.__ajaxConfig.errorList = this.__ajaxConfig.errorList.concat( opt.errorList );
-                this.__ajaxConfig.failList = this.__ajaxConfig.failList.concat( opt.failList );
-            } else {
-                this._ajaxConfig.successList = this._ajaxConfig.successList.concat( opt.successList );
-                this._ajaxConfig.errorList = this._ajaxConfig.errorList.concat( opt.errorList );
-                this._ajaxConfig.failList = this._ajaxConfig.failList.concat( opt.failList );
-            }
-            delete opt.successList;
-            delete opt.errorList;
-            delete opt.failList;
+            delete opt.headers;
             if ( isGlobal ) {
                 $.extend( this.__ajaxConfig.defaultConfig , opt );
             } else {
@@ -72,11 +76,17 @@ define( "Ajax" , [ "Base" ] , function( Base ){
             return this;
         },
         ajax        : function( opt ){
-            var _self = this;
+            var _self       = this,
+                _before     = this.__ajaxConfig.beforeList.concat( this._ajaxConfig.beforeList );
             opt.dataType = opt.dataType || "json";
             if ( typeof opt.data === "function" ) {
                 opt.successCall = opt.data;
                 delete opt.data;
+            }
+            for( var i = _before.length; i--; ){
+                if( $.isFunction( _before[ i ] ) && _before[ i ].call( opt ) === false ){
+                    return this;
+                }
             }
             opt.success = function( rtn ){
                 for( var i = _self.__ajaxConfig.successList.length; i--; ){
@@ -105,6 +115,12 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                     }
                 }
             }
+            opt.beforSend   = function( xhr ){
+                var _header     = $.extend( {} , _self.__ajaxConfig.defaultConfig.headers , _self._ajaxConfig.defaultConfig.headers );
+                for( var a in _header ){
+                    xhr[ a ] = _header[ a ];
+                }
+            }
             $.ajax( $.extend( {} , this.__ajaxConfig.defaultConfig , opt ) )
                 .fail( function( rtn ){
                     for( var i = _self.__ajaxConfig.failList.length; i--; ){
@@ -120,7 +136,13 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 } );
             return this;
         } ,
-        post        : function( url , data , func ){
+        post        : function(){
+            return this.ajaxSendPost.apply( this , arguments );
+        } ,
+        get         : function(){
+            return this.ajaxSendGet.apply( this , arguments );            
+        } , 
+        ajaxSendPost: function( url , data , func ){
             if ( typeof url != "string" ) {
                 func = data;
                 data = url;
@@ -133,7 +155,7 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 successCall : func
             } );
         } ,
-        get         : function( url , data , func ){
+        ajaxSendGet : function( url , data , func ){
             if ( typeof url != "string" ) {
                 func = data;
                 data = url;
@@ -145,11 +167,8 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 data        : data , 
                 successCall : func
             } );
-        } , 
-        /*!
-         *  jsonp请求
-         */
-        jsonp       : function( url , data , func ){
+        } ,
+        ajaxSendJsonp   : function( url , data , func ){
             if ( typeof url != "string" ) {
                 func = data;
                 data = url;
@@ -162,6 +181,12 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 dataType    : "jsonp" , 
                 successCall : func
             } );
+        } ,
+        /*!
+         *  jsonp请求
+         */
+        jsonp       : function(){
+            return this.ajaxSendJsonp.apply( this , arguments );
         } ,
         /*!
          *  管道 用于设置多个 ajax同时回调的操作处理

@@ -80,7 +80,7 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 					_self.getPageModalUI();
 					_$container.find( ".uiSub-page-singlePage" ).removeClass( "active" );
 					_self._pageConfig.$container.addClass( "active" );
-					if( $.isFunction( func ) ){ func.call( this ); };
+					if( $.isFunction( func ) ){ func.call( _self ); };
 				} );
 				return this;
 			} ,

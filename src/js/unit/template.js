@@ -130,7 +130,8 @@ define( "Template" , [ "Base" ] , function( Base ){
                                     } else {
                                         _al.push( _self.makeUpHtml.call( _self , json[ array[ i ].key ] , array[ i ].list ) );
                                     }
-                                    
+                                } else if( array[ i ] == "*" ){
+                                    _al.push( json );
                                 } else {
                                     _al.push( _self.getValue( array[ i ] , json ) );
                                 }

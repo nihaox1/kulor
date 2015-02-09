@@ -103,7 +103,7 @@ define( "Validate" , [ "Base" ] , function( Base ){
                                 _input.rules[ i ] = _input.rules[ i ].split( "[" );
                                 _rule.push( {
                                     ruleName    : _input.rules[ i ][ 0 ] ,
-                                    param       : eval( "[" + _input.rules[ i ][ 1 ] )
+                                    param       : JSON.parse( "[" + _input.rules[ i ][ 1 ] )
                                 } );
                             } else {
                                 _rule.push( {
