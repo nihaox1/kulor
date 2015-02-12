@@ -1,4 +1,13 @@
 define( "Dialog" , [ "Base" , "Panel" ] , function( Base , Panel ){
+    /*!
+     *  dialog类
+     *  @info       {string}    提示语句
+     *  @opts       {json}
+     *      width       :
+     *      title       : 左上角title
+     *      successBtnName       : 确定按钮名称
+     *      cancelBtnName        : 关闭按钮名称
+     */
     var Dialog = Base.extend( function( info , opts ){
         var _self = this;
         this.originInfo = $.extend( {
@@ -26,11 +35,20 @@ define( "Dialog" , [ "Base" , "Panel" ] , function( Base , Panel ){
                 cancel          : []
             } ,
             defaultTemplateValue    : Object.freeze( {
-                width           : "500px",
+                width           : "100%",
                 title           : "信息" , 
                 successBtnName  : "确定" , 
                 cancelBtnName   : "关闭" 
             } )
+        } ,
+        /*!
+         *  设置文本信息
+         *  @txt    {string}
+         */
+        setDialogTxt    : function( txt ){
+            this.originInfo.content     = txt;
+            this.panel.$modal.find( ".uiSub-dialog-content" ).html( txt );
+            return this;
         } ,
         /*!
          *  设置dialog事件
@@ -55,7 +73,7 @@ define( "Dialog" , [ "Base" , "Panel" ] , function( Base , Panel ){
                 _pass   = true;
             eventType   = this.originInfo.events[ eventType ] ? eventType : "cancel";
             _events     = this.__config.events[ eventType ].concat( this.originInfo.events[ eventType ] );
-            $.each( _events , function( fn ){
+            $.each( _events , function( k , fn ){
                 if( typeof fn == "function" ){
                     if( fn.call( _self ) === false ){
                         return _pass = false;
