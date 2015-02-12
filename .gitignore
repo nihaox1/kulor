@@ -4,3 +4,4 @@ dist
 build
 report
 npm-debug.log
+.DS_Store
