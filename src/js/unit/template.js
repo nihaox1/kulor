@@ -1,14 +1,12 @@
 define( "Template" , [ "Base" ] , function( Base ){
     /*!
-     *  @tagName    {string}
      *  要求获取的tagName索引
      *  默认为kulor-template
      */
-    var Template = Base.extend( function( tagName ){
+    var Template = Base.extend( function(){
         if( $.isEmptyObject( this.__Template ) ){
             this.getTemplateSources();    
         }
-        this.setTemplateRuleTagName( tagName );
     } , {
         __templateConfig    : {
             ruleTagName     : "kulor-template" 

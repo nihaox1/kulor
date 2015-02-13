@@ -37,7 +37,7 @@ define( "Ajax" , [ "Base" ] , function( Base ){
             errorList       : [],
             successList     : [],
             defaultConfig   : {
-                timeout     : 5000 ,
+                timeout     : 20000 ,
                 submitUrl   : false ,
                 headers     : {}
             }
