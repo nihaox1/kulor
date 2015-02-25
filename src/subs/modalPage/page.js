@@ -94,7 +94,7 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 			getPageModal 		: function( func ){
 				this._pageConfig.eventList.push( function(){
 					if( $.isFunction( func ) && 
-						( $.isFunction( this.__pageConfig.belongPageList._pageConfig.callBack ) ? this._pageConfig.belongPageList._pageListConfig.callBack.call( this ) !== false : true )
+						( $.isFunction( this._pageConfig.belongPageList._pageListConfig.callBack ) ? this._pageConfig.belongPageList._pageListConfig.callBack.call( this ) !== false : true )
 					){ func(); }
 				} );
 				if ( this._pageConfig.ready == "ready" ) {
