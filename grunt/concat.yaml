@@ -1,0 +1,10 @@
+global 	:
+    options 	: 
+        separator 	: ";"
+    src 	: 
+        - "<%= src %>/js/lib/JQ.js"
+        - "<%= src %>/js/lib/handlebars.js"
+        - "<%= src %>/js/lib/require.js"
+        - "<%= src %>/js/requireConfig.js"
+
+    dest 	: "<%= dev %>/js/global.js"

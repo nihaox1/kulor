@@ -24,6 +24,7 @@ dev:
   - less
   - jade:dev
   - copy-dev
+  - concat:global
   - listcsslink
 
 # 打开发布版服务器
