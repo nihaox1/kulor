@@ -38,7 +38,7 @@ define( "Template" , [ "Base" ] , function( Base ){
                 if( !this.__Template[ id ].handleBar ){
                     this.__Template[ id ].handleBar = HandleBars.compile( this.__Template[ id ].TemplateContent );
                 }
-                return this.__Template[ id ].handleBar( json );
+                return $.isEmptyObject( json ) ? this.__Template[ id ].TemplateContent : this.__Template[ id ].handleBar( json );
             }
             return this;
         } , 
