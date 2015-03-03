@@ -11,11 +11,10 @@ module.exports = function (grunt) {
         init: true,
         data: {
             pkg     : grunt.file.readJSON('package.json'),
-            src     : "src",             
+            src     : "src",     
+            doc     : "doc" ,        
             dist    : "dist",          
-            dev     : "dev",         
-            helper  : "helper",
-            host    : "127.0.0.1"
+            dev     : "dev"
         }
     });
 }

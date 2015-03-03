@@ -1,0 +1,99 @@
+body ,
+div , 
+p , 
+i , 
+b , 
+h1 , 
+h2 , 
+h3 ,
+h4 ,
+h5 ,
+ul ,
+ol ,
+li ,
+header ,
+footer ,
+article ,
+aside ,
+img ,
+a ,
+span  {
+    margin      : 0;
+    padding     : 0;
+    border      : 0;
+    font        : 12px serif arial "微软雅黑";
+    box-sizing  : border-box; 
+}
+
+li {
+    list-style  : none; 
+}
+
+a {
+    text-decoration     : none;
+    &:hover {
+        text-decoration : none; 
+    } 
+}
+
+:root {
+    background      : #eee; 
+}
+
+::selection {
+    background  : #f50;
+    color       : #fff;
+}
+
+.clearFix {
+    clear       : both; 
+}
+
+header.brand {
+    width       : 100%;
+    height      : 45px;
+    line-height : 45px;  
+    padding     : 0 5%;
+    font-size   : 30px; 
+    font-weight : border; 
+    position    : relative; 
+    border-bottom   : 1px solid #ccc;
+    b {
+        font-size   : 30px; 
+    }
+    span {
+        position    : absolute; 
+        right       : 5%;
+        top         : 12px;
+        font-size   : 20px;
+        color       : #aaa;
+    }
+}
+
+.contentBody {
+    width           : 100%;  
+    padding-left    : 300px; 
+    padding-top     : 10px; 
+    background      : #f1f1f1;
+    overflow        : auto; 
+}
+
+.pageContainer {
+    p {
+        line-height     : 20px;
+        font-size       : 14px;
+        color           : #666;  
+    }
+    a {
+        line-height     : 20px; 
+        font-size       : 14px; 
+    }
+    code {
+        width           : 95%; 
+        line-height     : 25px;
+        display         : block; 
+        color           : #fff;
+        background      : #333;
+        padding         : 10px 25px; 
+    }
+}

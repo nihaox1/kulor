@@ -1,0 +1,22 @@
+script( type="text/kulor-template" , id="baseMarkdown" )
+    ###Base类
+    | Base类可以帮助开发者快速从已存在的类中创建，继承，扩展一个新类         
+    | 一个简单的例子：
+    code 
+        | requirejs( "Base" , function( Base ){     
+        | &nbsp;&nbsp;var A = function( name ){ this.name = name; } ,       
+        | &nbsp;&nbsp;newClass = Base.extend( function( name , age ){} , {     
+        |    &nbsp;&nbsp;&nbsp;&nbsp;extend   : A            
+        |    &nbsp;&nbsp;&nbsp;&nbsp;say      : function(){}      
+        | &nbsp;&nbsp;} );  
+        | &nbsp;&nbsp;var b = new newClass( "bo" , 20 );   
+        | } )
+    |       
+    | 实例化的b变量将具备所有的A类的方法        
+    | 并且b内部的name将被设置为对应值  
+    ###方法      
+    ####Base.extend( func , opt )
+    | func为构造类 ，opt为配置参数        
+    | opt配置选项中存在2个关键key，extend，implements       
+    | extend为继承，值选项为类名      
+    | implements为扩展，对应值是已实例化的类，或者 实例化类 的数组

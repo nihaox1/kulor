@@ -2,11 +2,14 @@ copy-dev:
   - copy:fonts-dev
   - copy:images-dev
   - copy:js-dev
+  - copy:doc-js-dev
   - copy:lib-dev
   - copy:hoot-dev
   - copy:css-dev
   - copy:html-dev
   - copy:js-dev-sub
+  - copy:doc-js-dev-sub
+  - copy:doc-js-dev-markdown
   - copy:manifest
 
 copy-temp:
@@ -23,6 +26,7 @@ dev:
   - clean:dev
   - less
   - jade:dev
+  - jade:doc
   - copy-dev
   - concat:global
   - listcsslink

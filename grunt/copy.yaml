@@ -8,9 +8,9 @@ css-dev:
 fonts-dev:
   expand: true
   filter: isFile
-  cwd: <%= src %>/fonts
+  cwd: <%= src %>/css/fonts
   src: '*'
-  dest: <%= dev %>/fonts
+  dest: <%= dev %>/css/fonts
 
 images-dev:
   expand: true
@@ -77,6 +77,29 @@ js-dev-sub:
   cwd     : <%= src %>/subs/
   src     : "**/*.js"
   dest    : <%= dev %>/js/subs
+
+doc-js-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= doc %>/js
+  src: '**/*.js'
+  dest: <%= dev %>/js
+
+doc-js-dev-sub:
+  expand  : true
+  flatten : true
+  filter  : isFile
+  cwd     : <%= doc %>/subs/
+  src     : "**/*.js"
+  dest    : <%= dev %>/js/subs
+
+doc-js-dev-markdown:
+  expand  : true
+  flatten : true
+  filter  : isFile
+  cwd     : <%= doc %>/markdown/
+  src     : "**/*.js"
+  dest    : <%= dev %>/markdown
 
 manifest  :
   expand  : true

@@ -1,0 +1,6 @@
+allFile :
+    files :
+        expand  : true
+        src     : 'doc/markdown/*.md'
+        dest    : 'dev/markdown/'
+        ext     : '.html'

@@ -1,0 +1,13 @@
+link( rel="stylesheet" , type="text/css" , href="css/subs/nav.css" )
+.contentNav
+    h4 
+        a.h4 简介
+
+script( type="text/kulor-template" , id="navDlTemplate" )
+    dl
+        dt {{title}}
+        {{#list subs}}
+        dd( _val="{{name}}" ) {{title}}
+        {{/list}}
+
+script( type="text/javascript" , src="js/subs/nav.js" )

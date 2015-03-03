@@ -18,3 +18,18 @@ subs:
     src     : "**/*.less"
     dest    : <%= dev%>/css/subs
     ext     : ".css"
+
+doc:
+    expand  : true
+    cwd     : <%= doc %>/less
+    src     : '*.less'
+    dest    : <%= dev%>/css
+    ext     : '.css'
+
+docSubs:
+    expand  : true
+    flatten : true
+    cwd     : <%= doc %>/subs/
+    src     : '**/*.less'
+    dest    : <%= dev%>/css/subs
+    ext     : '.css'

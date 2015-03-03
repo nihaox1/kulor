@@ -11,3 +11,10 @@ dev :
     src     : '**/*.jade'
     dest    : <%= dev%>
     ext     : '.html'
+
+doc :
+    expand  : true
+    cwd     : <%= doc %>
+    src     : '**/*.jade'
+    dest    : <%= dev%>
+    ext     : '.html'

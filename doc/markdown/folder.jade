@@ -1,0 +1,22 @@
+script( type="text/kulor-template" , id="folderMarkdown" )
+    ###开发目录结构
+    | kulor希望各功能模块划分更加清晰        
+    | 因此，在kulor开发中，目录结构除了传统开发中划分的js，css，images目录外，可以划分出更多的模块目录      
+    | 以本站为例，目录结构大致如下：           
+    |     
+    code
+        | web       
+        | -js       
+        | --lib     
+        | -css      
+        | --lib     
+        | -less     
+        | -image        
+        | -subs     
+        | --nav     
+        | --...     
+        | -markdown         
+    |       
+    | subs，markdown目录均是新增目录     
+    | subs下存在多个以具体业务为单位的子集目录，如：nav，interview等       
+    | 这些目录的独立抽出，减少了js，css目录下文件数量，将文件模块化，在RIA开发中，这点将极其重要

@@ -1,0 +1,38 @@
+script( type="text/kulor-template" , id="templateMarkdown" )
+    ###Template模板类
+    | template模板类可以方便开发者快速的将json格式的数据与html进行结合，生成可视代码       
+    | 您可以快速的将模板类引入并使用，下面是一个简单的例子：    
+    |         
+    | html代码：       
+    code
+        | &lt;script type="text/kulor-template" id="templateId"&gt;     
+        |   &lt;h3&gt;{{title}}&lt;/h3&gt;      
+        | &lt;/script&gt;     
+    |   
+    | 模板文件由script包裹，type为text/kulor-template, id请务必填写唯一值     
+    | js代码：    
+    code
+        | requirejs( [ "Template" ] , function( Template ){     
+        | -var tmpl     = new Template();       
+        | -document.body.innerHTML = tmpl.getTemplate( { title : "xxxx" } , "templateId" );     
+        | -// return &lt;h3&gt;{{xxxx}}&lt;/h3&gt;       
+        | } )      
+    |       
+    | template模板类封装了[handlebars](http://handlebarsjs.com/),模板规则通用handlebars即可       
+    | 如果您的程序代码未引入handlebars时，template将使用内置的模板引擎，仅支持基本的拼接，list数组循环逻辑     
+    ### 方法
+    #### getTemplate( json , id )       
+    | 根据json 拼接html     
+    | json   {object}    待输入的json数据        
+    | id     {string}    模板名称      
+    | 返回html字符串
+    |       
+    #### getTemplateIdList( id )
+    | id {string}   模板名称
+    | 获取对应的模板信息
+    | 无参数时  返回所有的参数
+    |       
+    #### setTemplateRuleTagName( tagName )
+    | tagName    {string}       
+    | 设置模板的type 索引名称        
+    | 一旦设置了tagName 后续获取template的索引为script(type="text/tagName")      
