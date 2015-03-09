@@ -24,17 +24,18 @@ define( "EventBind" , [ "Base" ] , function( Base ){
 			if ( typeof events != "object" ) { return this; }
 			$.extend( this._eventBindLists , events );
 			$dom = $dom || $( document.body );
-			funcBody 	= typeof funcBody == "object" ? funcBody : {};
+			funcBody 	= typeof funcBody == "object" ? funcBody : { empty : true };
 			if( typeof funcBody.beforeEventBind === "function" ) {
 				this._eventBindLists.beforeEventBinds.push( funcBody.beforeEventBind );
 			}
 			if( typeof funcBody.afterEventBind === "function" ) {
 				this._eventBindLists.afterEventBinds.push( funcBody.afterEventBind );
 			}
+			if ( funcBody.empty ) { funcBody = null; }
 			for( var a in events ){
 				_key = a.split( "::" );
-				( function( ev , $m , func ){
-					func = typeof func == "function" ? func : ( funcBody || _self )[ func ];
+				( function( ev , $m , funcName ){
+					var func = typeof funcName == "function" ? funcName : ( funcBody || _self )[ funcName ];
 					$dom.on( ev , $m , function(){
 						var _go = true ,
 							i , len;
@@ -45,6 +46,7 @@ define( "EventBind" , [ "Base" ] , function( Base ){
 							}
 						}
 						if( _go ) {
+							func = func || ( funcBody || _self )[ funcName ];
 							func.call( this , _self );
 							for( i = 0 , len = _self._eventBindLists.afterEventBinds.length; i < len; i++ ){
 								_self._eventBindLists.afterEventBinds[ i ].call( this , _self );
