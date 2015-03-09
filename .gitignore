@@ -4,4 +4,12 @@ dist
 build
 report
 npm-debug.log
+core
+doc
+src/css
+src/layout
+src/page
+src/jade
+src/js/app.js
+src/js/home.js
 .DS_Store
