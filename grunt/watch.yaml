@@ -2,11 +2,16 @@ options:
   livereload: true
   spawn: false
 
+seajs:
+  files:
+    - <%= helper %>/sea-config.json
+  tasks:
+    - config_seajs:dev
+
 images:
   files:
     - <%= src %>/images/*.*
     - <%= src %>/images/**/*.*
-    - <%= doc %>/images/**/*.*
   tasks:
     - copy:images-dev
 
@@ -26,26 +31,19 @@ js:
   files:
     - <%= src %>/js/*.js
     - <%= src %>/js/**/*.js
-    - <%= src %>/subs/**/*.js
-    - <%= doc %>/js/**/*.js
-    - <%= doc %>/subs/**/*.js
-    - <%= doc %>/markdown/**/*.js
+    - <%= src %>/plugin/**/*.js
+    - <%= src %>/mock/**/*.js
   tasks:
     - copy:js-dev
     - copy:lib-dev
-    - copy:hoot-dev
     - copy:js-dev-sub
-    - copy:doc-js-dev
-    - copy:doc-js-dev-sub
-    - copy:doc-js-dev-markdown
+    - concat:mock
 
 less:
   files:
     - <%= src %>/less/*.less
     - <%= src %>/less/**/*.less
-    - <%= src %>/subs/**/*.less
-    - <%= doc %>/less/**/*.less
-    - <%= doc %>/subs/**/*.less
+    - <%= src %>/plugin/**/*.less
   tasks:
     - less
 
@@ -55,12 +53,10 @@ jade:
     - <%= src %>/template/*.jade
     - <%= src %>/layout/*.jade
     - <%= src %>/layout/**/*.jade
-    - <%= src %>/subs/**/*.jade
+    - <%= src %>/plugin/**/*.jade
     - <%= src %>/page/**/*.jade
-    - <%= doc %>/subs/**/*.jade
-    - <%= doc %>/*.jade
-    - <%= doc %>/markdown/*.jade
   tasks:
+    - string-replace:mockjs
     - jade
     - listcsslink
 

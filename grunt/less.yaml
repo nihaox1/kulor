@@ -11,25 +11,10 @@ files:
     dest    : <%= dev%>/css
     ext     : '.css'
 
-subs:
+plugin:
     expand  : true
     flatten : true
-    cwd     : <%= src%>/subs/
+    cwd     : <%= src%>/plugin/
     src     : "**/*.less"
-    dest    : <%= dev%>/css/subs
+    dest    : <%= dev%>/css/plugin
     ext     : ".css"
-
-doc:
-    expand  : true
-    cwd     : <%= doc %>/less
-    src     : '*.less'
-    dest    : <%= dev%>/css
-    ext     : '.css'
-
-docSubs:
-    expand  : true
-    flatten : true
-    cwd     : <%= doc %>/subs/
-    src     : '**/*.less'
-    dest    : <%= dev%>/css/subs
-    ext     : '.css'

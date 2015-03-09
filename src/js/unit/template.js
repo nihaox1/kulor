@@ -38,7 +38,7 @@ define( "Template" , [ "Base" ] , function( Base ){
                 if( !this.__Template[ id ].handleBar ){
                     this.__Template[ id ].handleBar = HandleBars.compile( this.__Template[ id ].TemplateContent );
                 }
-                return $.isEmptyObject( json ) ? this.__Template[ id ].TemplateContent : this.__Template[ id ].handleBar( json );
+                return this.__Template[ id ].handleBar( json );
             }
             return this;
         } , 
@@ -87,7 +87,7 @@ define( "Template" , [ "Base" ] , function( Base ){
             return this;
         }
     } ) ,
-    HandleBars  = HandleBars || (function(){
+    HandleBars  = window.Handlebars || (function(){
         var HandleBar = Base.extend( function( html ){
             var _self           = this;
             this.htmlString     = html;
@@ -158,10 +158,11 @@ define( "Template" , [ "Base" ] , function( Base ){
                     _x      = function(){
                         var _rtn = [];
                         for( ;_i < _len; _i++ ){
-                            if( /\/list/.test( _al[ _i ] ) ){
+                            _al[ _i ].replace( /([\/|\#])list/gi , "$1each" );
+                            if( /\/each/.test( _al[ _i ] ) ){
                                 return _rtn;
-                            } else if( /\#list/.test( _al[ _i ] ) ){
-                                _rtn.push( { key : _al[ _i++ ].replace( /\#list[ ]+/ , "" ) , list : _x() } );
+                            } else if( /\#each/.test( _al[ _i ] ) ){
+                                _rtn.push( { key : _al[ _i++ ].replace( /\#each[ ]+/ , "" ) , list : _x() } );
                             } else {
                                 _rtn.push( _al[ _i ] );
                             }

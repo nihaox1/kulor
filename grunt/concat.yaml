@@ -2,9 +2,16 @@ global 	:
     options 	: 
         separator 	: ";"
     src 	: 
-        - "src/js/lib/JQ.js"
-        - "src/js/lib/handlebars.js"
-        - "src/js/lib/require.js"
-        - "src/js/requireConfig.js"
+        - "<%= src %>/js/lib/JQ.js"
+        - "<%= src %>/js/lib/handlebars.js"
+        - "<%= src %>/js/lib/require.js"
+        - "<%= src %>/js/requireConfig.js"
 
     dest 	: "<%= dev %>/js/global.js"
+
+mock    :
+    options     :
+        separator   : ""
+    src         : 
+        - "<%= src %>/mock/**/*.js"
+    dest        : <%= dev %>/mock/content.js

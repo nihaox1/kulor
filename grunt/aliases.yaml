@@ -2,14 +2,10 @@ copy-dev:
   - copy:fonts-dev
   - copy:images-dev
   - copy:js-dev
-  - copy:doc-js-dev
   - copy:lib-dev
-  - copy:hoot-dev
   - copy:css-dev
   - copy:html-dev
   - copy:js-dev-sub
-  - copy:doc-js-dev-sub
-  - copy:doc-js-dev-markdown
   - copy:manifest
 
 copy-temp:
@@ -21,12 +17,21 @@ copy-dist:
   - copy:lib-dist
   - copy:html-dist
 
+mock:
+  - clean:dev
+  - less
+  - copy-dev
+  - string-replace:mockjs
+  - jade:mock
+  - concat:global
+  - concat:mock
+  - listcsslink
+
 # 构建开发版本
 dev:
   - clean:dev
   - less
   - jade:dev
-  - jade:doc
   - copy-dev
   - concat:global
   - listcsslink
@@ -37,5 +42,5 @@ online:
   - replace:product
 
 default:
-  - dev
+  - mock
   - watch

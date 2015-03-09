@@ -8,9 +8,9 @@ css-dev:
 fonts-dev:
   expand: true
   filter: isFile
-  cwd: <%= src %>/css/fonts
+  cwd: <%= src %>/fonts
   src: '*'
-  dest: <%= dev %>/css/fonts
+  dest: <%= dev %>/fonts
 
 images-dev:
   expand: true
@@ -27,7 +27,7 @@ lib-dev:
   expand: true
   filter: isFile
   cwd: <%= src %>/js/lib
-  src: '*'
+  src: '**.*'
   dest: <%= dev %>/js/lib
 
 lib-temp:
@@ -49,13 +49,6 @@ lib-dist:
     - '*.map'
   dest: <%= dist %>/js/lib
 
-hoot-dev:
-  expand: true
-  filter: isFile
-  cwd: <%= src %>/js/hoot
-  src: '*'
-  dest: <%= dev %>/js/hoot
-
 js-dev:
   expand: true
   filter: isFile
@@ -74,32 +67,9 @@ js-dev-sub:
   expand  : true
   flatten : true
   filter  : isFile
-  cwd     : <%= src %>/subs/
+  cwd     : <%= src %>/plugin/
   src     : "**/*.js"
-  dest    : <%= dev %>/js/subs
-
-doc-js-dev:
-  expand: true
-  filter: isFile
-  cwd: <%= doc %>/js
-  src: '**/*.js'
-  dest: <%= dev %>/js
-
-doc-js-dev-sub:
-  expand  : true
-  flatten : true
-  filter  : isFile
-  cwd     : <%= doc %>/subs/
-  src     : "**/*.js"
-  dest    : <%= dev %>/js/subs
-
-doc-js-dev-markdown:
-  expand  : true
-  flatten : true
-  filter  : isFile
-  cwd     : <%= doc %>/markdown/
-  src     : "**/*.js"
-  dest    : <%= dev %>/markdown
+  dest    : <%= dev %>/js/plugin
 
 manifest  :
   expand  : true

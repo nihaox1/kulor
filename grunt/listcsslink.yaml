@@ -1,3 +1,2 @@
 linkcss :
-    src     : <%= doc %>
-    dev     : <%= dev %>/
+    src     : <%= dev %>/

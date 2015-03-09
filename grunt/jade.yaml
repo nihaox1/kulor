@@ -12,9 +12,9 @@ dev :
     dest    : <%= dev%>
     ext     : '.html'
 
-doc :
+mock :
     expand  : true
-    cwd     : <%= doc %>
+    cwd     : <%= temp %>
     src     : '**/*.jade'
     dest    : <%= dev%>
     ext     : '.html'

@@ -24,7 +24,16 @@ define( "Base" , [] , function(){
     return {
         extend  : function( constructor , opts ){
             var Base,
-                _extend;
+                _extend,
+                _implements = opts.implements ,
+                _do     = function(){
+                    constructor.apply( this , arguments );
+                    if ( _implements instanceof Array ) {
+                        for( var i = 0 , len = _implements.length; i < len; i++ ){
+                            _implements[ i ].constructor.call( this );
+                        }
+                    }
+                };
             if( typeof constructor != "function" ){
                 return;
             } else {
@@ -32,14 +41,14 @@ define( "Base" , [] , function(){
                     _extend = opts.extend;
                     Base = function(){
                         _extend.apply( this , arguments );
-                        constructor.apply( this , arguments );
+                        _do.apply( this , arguments );
                     }
                     Base.prototype = Object.prototype.__proto__ ? { __proto__ : _extend.__proto__ } : 
                                     $.isFunction( _extend ) ? new _extend() : _extend;
                     delete opts.extend;
                 } else {
                     Base = function(){
-                        constructor.apply( this , arguments );
+                        _do.apply( this , arguments );
                     }
                 }
                 Base.prototype.constructor = constructor;
