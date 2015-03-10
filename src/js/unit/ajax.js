@@ -75,12 +75,19 @@ define( "Ajax" , [ "Base" ] , function( Base ){
             };
             return this;
         },
+        /*!
+         *  封装jquery的ajax
+         *  @opt    {json}
+         *      headerTypes     : {json}    封装beforeSend的头
+         *      success     : {func}    成功回调
+         */
         ajax        : function( opt ){
             var _self       = this,
-                _before     = this.__ajaxConfig.beforeList.concat( this._ajaxConfig.beforeList );
+                _before     = this.__ajaxConfig.beforeList.concat( this._ajaxConfig.beforeList ),
+                _ajax;
             opt.dataType = opt.dataType || "json";
             if ( typeof opt.data === "function" ) {
-                opt.successCall = opt.data;
+                opt.success = opt.data;
                 delete opt.data;
             }
             for( var i = _before.length; i--; ){
@@ -88,41 +95,47 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                     return this;
                 }
             }
-            opt.success = function( rtn ){
-                for( var i = _self.__ajaxConfig.successList.length; i--; ){
-                    if( _self.__ajaxConfig.successList[ i ]( rtn ) === false ){
-                        return;
+            _ajax = {
+                success : function( rtn ){
+                    for( var i = _self.__ajaxConfig.successList.length; i--; ){
+                        if( _self.__ajaxConfig.successList[ i ]( rtn ) === false ){
+                            return;
+                        }
                     }
-                }
-                for( var i = _self._ajaxConfig.successList.length; i--; ){
-                    if( _self._ajaxConfig.successList[ i ]( rtn ) === false ){
-                        return;
+                    for( var i = _self._ajaxConfig.successList.length; i--; ){
+                        if( _self._ajaxConfig.successList[ i ]( rtn ) === false ){
+                            return;
+                        }
                     }
-                }
-                if ( opt.successCall && typeof opt.successCall == "function" ) {
-                    opt.successCall( rtn );
-                }
-            }
-            opt.error = function( rtn ){
-                for( var i = _self.__ajaxConfig.errorList.length; i--; ){
-                    if( _self.__ajaxConfig.errorList[ i ]( rtn ) === false ){
-                        return;
+                    if ( opt.success && typeof opt.success == "function" ) {
+                        opt.success( rtn );
                     }
-                }
-                for( var i = _self._ajaxConfig.errorList.length; i--; ){
-                    if( _self._ajaxConfig.errorList[ i ]( rtn ) === false ){
-                        return;
+                } ,
+                error : function( rtn ){
+                    for( var i = _self.__ajaxConfig.errorList.length; i--; ){
+                        if( _self.__ajaxConfig.errorList[ i ]( rtn ) === false ){
+                            return;
+                        }
                     }
-                }
-            }
-            opt.beforSend   = function( xhr ){
-                var _header     = $.extend( {} , _self.__ajaxConfig.defaultConfig.headers , _self._ajaxConfig.defaultConfig.headers );
-                for( var a in _header ){
-                    xhr[ a ] = _header[ a ];
-                }
-            }
-            $.ajax( $.extend( {} , this.__ajaxConfig.defaultConfig , opt ) )
-                .fail( function( rtn ){
+                    for( var i = _self._ajaxConfig.errorList.length; i--; ){
+                        if( _self._ajaxConfig.errorList[ i ]( rtn ) === false ){
+                            return;
+                        }
+                    }
+                    if ( opt.error && typeof opt.error == "function" ) {
+                        opt.error( rtn );
+                    }
+                } ,
+                beforSend : function( xhr ){
+                    var _header     = $.extend( {} , _self.__ajaxConfig.defaultConfig.headers , _self._ajaxConfig.defaultConfig.headers , opt.headerTypes );
+                    for( var a in _header ){
+                        xhr[ a ] = _header[ a ];
+                    }
+                    if( typeof opt.beforSend === "function" ){
+                        opt.beforSend( xhr );
+                    }
+                } ,
+                fail : function( rtn ){
                     for( var i = _self.__ajaxConfig.failList.length; i--; ){
                         if( _self.__ajaxConfig.failList[ i ]( rtn ) === false ){
                             return;
@@ -133,7 +146,12 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                             return;
                         }
                     }
-                } );
+                    if ( opt.fail && typeof opt.fail == "function" ) {
+                        opt.fail( rtn );
+                    }
+                }
+            }
+            $.ajax( $.extend( {} , this.__ajaxConfig.defaultConfig , opt , _ajax ) );
             return this;
         } ,
         post        : function(){
@@ -152,7 +170,7 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 type        : "POST" ,
                 url         : url ,
                 data        : data , 
-                successCall : func
+                success     : func
             } );
         } ,
         ajaxSendGet : function( url , data , func ){
@@ -165,7 +183,7 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 type        : "GET" ,
                 url         : url ,
                 data        : data , 
-                successCall : func
+                success     : func
             } );
         } ,
         ajaxSendJsonp   : function( url , data , func ){
@@ -179,7 +197,7 @@ define( "Ajax" , [ "Base" ] , function( Base ){
                 url         : url ,
                 data        : data , 
                 dataType    : "jsonp" , 
-                successCall : func
+                success     : func
             } );
         } ,
         /*!
@@ -189,9 +207,15 @@ define( "Ajax" , [ "Base" ] , function( Base ){
             return this.ajaxSendJsonp.apply( this , arguments );
         } ,
         /*!
+         *  setAjaxRequestPipe缩写
+         */
+        pipe        : function(){
+            return this.setAjaxRequestPipe.apply( this , arguments );
+        },
+        /*!
          *  管道 用于设置多个 ajax同时回调的操作处理
          */
-        pipe        : function( url , data , type ){
+        setAjaxRequestPipe : function( url , data , type ){
             var _self   = this,
                 _type   = type ? type.toString().toLocaleString() : "post",
                 _opt;
@@ -216,7 +240,7 @@ define( "Ajax" , [ "Base" ] , function( Base ){
             }
             _opt.pipeId = this.isPipe;
             _opt.pos    = this.pipeList[ this.isPipe ].length - 1;
-            _opt.successCall = function( rtn ){
+            _opt.success    = function( rtn ){
                 _self.pipeList[ this.pipeId ][ this.pos ].rtnVal = rtn;
                 if( ++_self.pipeList[ this.pipeId ].complatedCount == _self.pipeList[ this.pipeId ].length ){
                     _self.pipeList[ this.pipeId ].handleComplated.apply( _self , ( function( vals ){
@@ -230,13 +254,19 @@ define( "Ajax" , [ "Base" ] , function( Base ){
             };
             this.ajax( _opt );
             return this;
-        },
+        } ,
+        /*!
+         *  callbackAfterAjaxPipe缩写
+         */
+        then        : function(){
+            return this.callbackAfterAjaxPipe.apply( this , arguments );
+        } ,
         /*!
          *  管道设置完毕后 要求执行的函数内容
          *  @func   {func}  回调事件
          *      argument   : {array}   对应pipe位置的数组
          */
-        then        : function( func ){
+        callbackAfterAjaxPipe   : function( func ) {
             this.pipeList[ this.isPipe ].handleComplated = func;
             this.isPipe = false;
             return this;

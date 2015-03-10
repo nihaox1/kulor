@@ -25,7 +25,7 @@ define( "List" , [ "Base" , "DataView" , "Ajax" , "EventBind" ] , function( Base
                 }
                 _insertPage.pages   = _pages;
                 if ( _pages[ 0 ].page > 1 ) { _insertPage.pageBefore = "..."; }
-                if ( _pages[ this._listConfig.pageBtnNum - 1 ].page < this._listConfig.totalPage ) { _insertPage.pageAfter = "..."; }
+                if ( _pages[ _pages.length - 1 ].page < this._listConfig.totalPage ) { _insertPage.pageAfter = "..."; }
             }
             return this.getTemplate( _insertPage , "uiSubListPageTemplate" );
         }
@@ -61,9 +61,11 @@ define( "List" , [ "Base" , "DataView" , "Ajax" , "EventBind" ] , function( Base
                 this._listConfig.total      = json.total;
                 this._listConfig.totalPage  = Math.ceil( json.total / this._listConfig.pageSize );
             }
-            this._listConfig.$pages
+            if ( this._listConfig.$pages ) {
+                this._listConfig.$pages
                             .empty()
                             .append( tool.redrawListPages.call( this , json ) );
+            }
             this._listConfig.ready     = true;
             return this.setDataView( json );
         } ,

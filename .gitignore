@@ -12,4 +12,5 @@ src/page
 src/jade
 src/js/app.js
 src/js/home.js
+.temp
 .DS_Store

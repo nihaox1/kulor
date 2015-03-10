@@ -5,12 +5,12 @@ define( "EventBind" , [ "Base" ] , function( Base ){
 	 * 	@events 	{obj}
 	 * 	@$dom 		{JQDOM} 	代理的$dom
 	 */
-	var EventBind = Base.extend( function( events , $dom ){
+	var EventBind = Base.extend( function( events , $dom , funcBody ){
 		this._eventBindLists = $.extend( {
 			beforeEventBinds 	: [],
 			afterEventBinds 	: []
 		} , events );
-		this.addEventBindItems( this._events , $dom );
+		this.addEventBindItems( events , $dom , funcBody );
 	} , {
 		/*!
 		 *	新增一个事件绑定项
