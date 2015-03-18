@@ -78,9 +78,7 @@ define( "RequireFile" , [ "Base" ] , function( Base ){
 	 *	获取对应的html css image文件
 	 */
 	RequireFile 	= Base.extend( function( filePath , callBack ){
-		this._requireFileConfig = {
-
-		}
+		this._requireFileConfig = {}
 		if ( !this.__requireFileConfig.files ) { 
 			this.__requireFileConfig.files = {};
 			this.__initFiles(); 

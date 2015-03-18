@@ -12,9 +12,16 @@ define( "Base" , [] , function(){
             }
         },
         setImplements : function( Base , opts ){
+            var _cls;
             if( opts.implements ){
                 for( var a in opts.implements ){
-                    tool.setSingleImplements( Base , opts.implements[ a ].__proto__ );
+                    _cls = opts.implements[ a ];
+                    if ( _cls.__proto__ ) { 
+                        _cls = _cls.__proto__;
+                    } else if ( Object.getPrototypeOf ) {
+                        _cls = Object.getPrototypeOf( _cls );
+                    };
+                    tool.setSingleImplements( Base , _cls );
                 }
             }
             delete opts.implements;

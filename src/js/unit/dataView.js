@@ -27,6 +27,9 @@ define( "DataView" , [ "Base" , "Template" , "EventBind" ] , function( Base , Te
 		set 			: function(){
 			return this.setDataView.apply( this , arguments );
 		},
+		get : function(){
+			return this.getViewData.apply( this , arguments );
+		} ,
 		getDataModal 	: function(){
 			if ( !this._dataViewConfig.$content || !this._dataViewConfig.$content.parent.length ) {
 				this._dataViewConfig.$content = $( this.getTemplate( this._dataViewConfig.innerVals , this._dataViewConfig.templateId ) );
@@ -35,6 +38,9 @@ define( "DataView" , [ "Base" , "Template" , "EventBind" ] , function( Base , Te
 			};
 			return this._dataViewConfig.$content;
 		},
+		getViewData : function(){
+			return this._dataViewConfig.innerVals;
+		} ,
 		/*!
 		 *	设置数据
 		 */
@@ -57,14 +63,24 @@ define( "DataView" , [ "Base" , "Template" , "EventBind" ] , function( Base , Te
 		refreshDataView : function( json ){
 			var _$parent ,
 				_content ,
-				_className;
+				_className ,
+				_htmlStr ,
+				_$html;
 			if ( json !== this._dataViewConfig.innerVals ) {
 				this._dataViewConfig.innerVals = json;
 				if ( this._dataViewConfig.$content ) {
 					_$parent = this._dataViewConfig.$content.parent();
 					if ( _$parent.length ) {
 						_content = this._dataViewConfig.$content[ 0 ];
-						_content.outerHTML = this.getTemplate( json , this._dataViewConfig.templateId ).replace( /(<\w*)/ , "$1 dataViewId='" + this._dataViewConfig.dataViewId + "'" );
+						_htmlStr = this.getTemplate( json , this._dataViewConfig.templateId ).replace( /(<\w*)/ , "$1 dataViewId='" + this._dataViewConfig.dataViewId + "'" );
+						try {
+							_content.outerHTML = _htmlStr;
+						} catch( e ) {
+							_$html = $( _htmlStr );
+							//	ie9以下  某些不规范的html会报错 ，这里先转换成可用代码再进行push
+							this._dataViewConfig.$content.empty().append( _$html.html() ).attr( _$html[0].attributes );
+							_$html = null;
+						}
 						this._dataViewConfig.$content = _$parent.find( _content.tagName + "[dataViewId='" + this._dataViewConfig.dataViewId + "']" );
 						this.addEventBindItems( this._dataViewConfig.events , this._dataViewConfig.$content );
 					}

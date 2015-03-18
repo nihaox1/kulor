@@ -34,7 +34,7 @@ define( "List" , [ "Base" , "DataView" , "Ajax" , "EventBind" ] , function( Base
      *
      */
     list   = Base.extend( function( templateId , json , events , opt ){
-        this._listConfig   = $.extend( this.__listConfig , opt );
+        this._listConfig   = $.extend( {} , this.__listConfig , opt );
     } , {
         extend      : DataView ,
         implements  : [ new Ajax() , new EventBind() ] ,

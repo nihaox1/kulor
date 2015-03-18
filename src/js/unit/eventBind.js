@@ -52,6 +52,7 @@ define( "EventBind" , [ "Base" ] , function( Base ){
 								_self._eventBindLists.afterEventBinds[ i ].call( this , _self );
 							}
 						}
+						return _go;
 					} );
 				} )( _key[ 1 ] , _key[ 0 ] , events[ a ] );
 			}

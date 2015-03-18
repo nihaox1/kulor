@@ -1,4 +1,5 @@
 define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , function( Base , Template , RequireFile , ModalView ){
+	"use strict"
 	/*!
 	 *	富客户端 提供一个page管理
 	 * 	@pageListId 	{string} 	自定义一个pageListId
@@ -84,10 +85,13 @@ define( "Page" , [ "Base" , "Template" , "RequireFile" , "ModalView" ] , functio
 				return this;
 			} ,
 			handlePageEventList 	: function(){
-				for( var i = 0 , len = this._pageConfig.eventList.length; i < len; i++){
-					this._pageConfig.eventList[ i ].call( this );
-				}
+				// 转移事件队列，将队列池清空，防止队列中事件互调造成内存溢出
+				var _el = [].concat( this._pageConfig.eventList );
 				this._pageConfig.eventList.length = 0;
+				for( var i = 0 , len = _el.length; i < len; i++){
+					_el[ i ].call( this );
+				}
+				_el = null;
 				return this;
 			} ,
 			getPageModal 		: function( func ){
