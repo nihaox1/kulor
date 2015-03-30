@@ -1,9 +1,15 @@
 {
-    "name"    : "kulor",
-    "version" : "0.1.0",
+    "name"          : "kulor",
+    "description"   : "kulor web framework",
+    "version" : "0.1.1",
+    "homepage": "http://nihaox1.github.io/kulor-doc/",
     "author"  : {
         "name"    : "bo.cheng",
         "email"   : "chen8114@sina.com"
+    },
+    "repository": {
+        "type"  : "git",
+        "url"   : "https://github.com/nihaox1/kulor"
     },
     "dependencies"  : {},
     "devDependencies" : {
